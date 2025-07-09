@@ -1,0 +1,78 @@
+body {
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+}
+
+:root {
+    --bg-dark: #020617;
+    --card-dark: #1e293b;
+    --text-dark: #f1f5f9;
+    --accent: #f97316;
+    --accent-hover: #ea580c;
+    --correct: #22c55e;
+    --incorrect: #ef4444;
+    --primary: #3b82f6;
+}
+
+.card {
+    background-color: var(--card-dark);
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
+    border: 1px solid #334155;
+    color: #f1f5f9;
+}
+
+.difficulty-badge {
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.bg-facil { background-color: #3b82f6; color: white; }
+.bg-medio { background-color: #f59e0b; color: white; }
+.bg-dificil { background-color: #ef4444; color: white; }
+
+
+.option-button {
+    background-color: #334155;
+    color: #e2e8f0;
+    border: 2px solid transparent;
+    transition: all 0.2s ease-in-out;
+}
+.option-button:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+.option-button.correct {
+    background-color: var(--correct) !important;
+    border-color: var(--correct) !important;
+    color: white !important;
+}
+.option-button.incorrect {
+    background-color: var(--incorrect) !important;
+    border-color: var(--incorrect) !important;
+    color: white !important;
+}
+
+.review-option.correct {
+    background-color: #166534;
+    border-color: #22c55e;
+}
+.review-option.incorrect {
+    background-color: #991b1b;
+    border-color: #ef4444;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de Estudos | Foco na Aprovação</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="./Css/style.css"> 
+</head>
+<body> 
+    <div id="app" class="container mx-auto p-4 md:p-8 max-w-4xl">
+        <div id="loading-message" class="text-center p-8 text-slate-400">
+        </div>
+
+        <header class="flex justify-between items-center mb-10">
+            <div class="flex items-center gap-4">
+                 <div class="bg-orange-500 p-3 rounded-xl text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-award"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 17 17 23 15.79 13.88"></polyline></svg>
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-100">Quiz da Aprovação</h1>
+                    <p class="text-slate-400">Edição Foco Total</p>
+                </div>
+            </div>
+        </header>
+
+        <main id="screen-container">
+            <div id="welcome-screen" class="hidden fade-in text-center card p-8 md:p-12 border-t-4 border-orange-500">
+                <h2 class="text-4xl font-extrabold mb-4 text-white">Preparada para Vencer?</h2>
+                <p class="mb-8 text-slate-400 max-w-md mx-auto">Este é o seu campo de treino. Cada questão te deixa mais perto da aprovação.</p>
+                <div class="max-w-sm mx-auto">
+                    <input type="text" id="username-input" placeholder="Digite seu nome de guerreira" class="w-full p-3 text-center border-2 border-slate-600 rounded-lg bg-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-orange-500">
+                    <button id="start-button" class="mt-6 w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg transition-all transform hover:scale-105 shadow-lg hover:shadow-orange-500/30">Começar o Treino</button>
+                </div>
+            </div>
+
+            <div id="welcome-back-screen" class="hidden fade-in text-center card p-8 md:p-12 border-t-4 border-green-500">
+                <h2 class="text-4xl font-bold mb-4 text-white">Bem-vinda de volta, <span id="welcome-back-username" class="text-orange-500"></span>!</h2>
+                <p class="mb-8 text-slate-400 max-w-md mx-auto">Sua jornada continua. O que você deseja fazer?</p>
+                <div class="flex flex-col sm:flex-row gap-4 max-w-sm mx-auto">
+                    <button id="continue-button" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition-all transform hover:scale-105 shadow-lg">Continuar de Onde Parou</button>
+                    <button id="restart-button" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg transition-all transform hover:scale-105 shadow-lg">Começar um Novo Jogo</button>
+                </div>
+            </div>
+
+            <div id="menu-screen" class="hidden fade-in">
+                <div class="mb-8 p-6 card flex justify-between items-center">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Vamos com tudo, <span id="username-display" class="text-orange-500"></span>!</h2>
+                        <p class="text-slate-400 mt-1">Escolha sua missão de hoje:</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-bold text-lg text-white">Nível <span id="level-display">1</span></p>
+                        <div class="w-32 bg-slate-700 rounded-full h-2.5 mt-1">
+                            <div id="xp-bar" class="bg-green-500 h-2.5 rounded-full" style="width: 0%"></div>
+                        </div>
+                        <p class="text-xs text-slate-400"><span id="xp-display">0</span> / <span id="xp-to-next-level-display">100</span> XP</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <button data-mode="Português" class="menu-button card p-6 text-left hover:border-blue-500 hover:shadow-lg transition-all group">
+                        <h3 class="text-xl font-bold mb-2 text-blue-500">Português</h3>
+                        <p class="text-sm text-slate-400">Gramática e interpretação (<span id="count-portugues">0</span> questões).</p>
+                    </button>
+                    <button data-mode="Matemática" class="menu-button card p-6 text-left hover:border-yellow-500 hover:shadow-lg transition-all group">
+                        <h3 class="text-xl font-bold mb-2 text-yellow-500">Matemática</h3>
+                        <p class="text-sm text-slate-400">Cálculos e problemas (<span id="count-matematica">0</span> questões).</p>
+                    </button>
+                    <button data-mode="Raciocínio Lógico" class="menu-button card p-6 text-left hover:border-purple-500 hover:shadow-lg transition-all group">
+                        <h3 class="text-xl font-bold mb-2 text-purple-500">Raciocínio Lógico</h3>
+                        <p class="text-sm text-slate-400">Sequências e deduções (<span id="count-raciocinio">0</span> questões).</p>
+                    </button>
+                </div>
+                <div class="mt-8 text-center">
+                    <button data-mode="Misto" class="menu-button w-full md:w-auto bg-slate-800 text-white hover:bg-slate-950 font-bold py-3 px-8 rounded-lg transition-all transform hover:scale-105">
+                        Simulado Misto Completo 🚀 (<span id="count-misto">0</span> questões)
+                    </button>
+                </div>
+                <div class="mt-6 text-center">
+                    <button id="stats-button" class="text-sm font-semibold text-slate-400 hover:text-orange-500">Ver Desempenho Completo</button>
+                    <span class="mx-2 text-slate-600">|</span>
+                    <button id="change-user-button" class="text-sm font-semibold text-slate-400 hover:text-orange-500">Trocar Usuário</button>
+                </div>
+            </div>
+
+            <div id="quiz-screen" class="hidden fade-in">
+                <p class="text-sm font-semibold text-orange-400" id="quiz-subject"></p>
+                <div class="w-full bg-slate-700 rounded-full h-2.5 mb-6">
+                    <div id="progress-bar" class="bg-red-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+                <div class="card p-6 md:p-8">
+                    <div class="flex justify-between items-start mb-4">
+                        <div id="quiz-difficulty" class="difficulty-badge"></div>
+                        <div class="flex items-center space-x-2 text-slate-400 font-semibold bg-slate-800/50 px-3 py-1 rounded-full">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <span id="timer" class="text-lg">1:30</span>
+                        </div>
+                    </div>
+                    <hr class="my-6 border-slate-700">
+                    <div id="question-container">
+                        <p id="question-text" class="text-xl md:text-2xl mb-6 font-medium leading-relaxed text-slate-100"></p>
+                        <div id="question-image-container" class="mb-6 max-w-full mx-auto">
+                            <img id="question-image" src="" alt="Ilustração da questão" class="hidden max-w-full h-auto rounded-lg shadow-md">
+                        </div>
+                    </div>
+                    <div id="options-container" class="grid grid-cols-1 gap-4">
+                    </div>
+                </div>
+                <button id="exit-quiz-button" class="mt-6 w-full text-center text-slate-400 hover:text-red-500 font-semibold">Sair do Quiz</button>
+            </div>
+
+            <div id="results-screen" class="hidden fade-in text-center card p-8">
+                <h2 class="text-3xl font-bold mb-2" id="result-title">Missão Cumprida!</h2>
+                <p class="text-lg mb-6 text-slate-400" id="result-message"></p>
+                <div class="bg-slate-800/50 p-6 rounded-xl mb-6">
+                    <p class="text-lg text-slate-200">Sua pontuação</p>
+                    <p class="text-5xl font-extrabold my-2"><span id="final-score" class="text-orange-500"></span></p>
+                    <div class="flex justify-center gap-6 text-sm text-slate-300">
+                        <span>Acertos: <strong id="correct-answers"></strong></span>
+                        <span>Total: <strong id="total-questions"></strong></span>
+                    </div>
+                </div>
+                <div class="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+                    <button id="review-errors-button" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-lg transition-transform transform hover:scale-105">Analisar e Melhorar</button>
+                    <button id="back-to-menu-button" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition-transform transform hover:scale-105">Voltar à Base</button>
+                </div>
+            </div>
+
+            <div id="review-screen" class="hidden fade-in">
+                <h2 class="text-3xl font-bold mb-6 text-center text-white">Revisão do Simulado</h2>
+                <div id="review-content" class="space-y-8"></div>
+                <div class="mt-8 text-center">
+                     <button id="back-to-results-button" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg">Voltar aos Resultados</button>
+                </div>
+            </div>
+
+            <div id="stats-screen" class="hidden fade-in card p-8">
+                <h2 class="text-3xl font-bold mb-8 text-white">Seu Painel de Desempenho</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-slate-800/50 p-4 rounded-xl text-center">
+                        <p class="text-base font-semibold text-slate-400">Simulados Feitos</p>
+                        <p id="stats-total-simulados" class="text-4xl font-bold text-blue-500">0</p>
+                    </div>
+                    <div class="bg-slate-800/50 p-4 rounded-xl text-center">
+                        <p class="text-base font-semibold text-slate-400">Média Geral de Acertos</p>
+                        <p id="stats-avg-geral" class="text-4xl font-bold text-green-500">0%</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-white">Desempenho por Disciplina</h3>
+                        <canvas id="stats-chart-subject"></canvas>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-white">Desempenho por Dificuldade</h3>
+                        <canvas id="stats-chart-difficulty"></canvas>
+                    </div>
+                </div>
+                 <div class="mt-8">
+                    <h3 class="text-xl font-semibold mb-4 text-white">Pontos para Reforçar o Treino</h3>
+                    <div id="stats-most-missed" class="space-y-3">
+                        </div>
+                </div>
+                <div class="mt-8 text-center">
+                    <button id="back-to-menu-from-stats" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg">Voltar</button>
+                </div>
+            </div>
+        </main>
+        <footer class="text-center mt-12 text-sm">
+        </footer>
+    </div>
+    <script src="./js/script.js"defer></script>
+</body>
+</html>
